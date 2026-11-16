@@ -1,0 +1,87 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Shared Renovate settings for pnpm/Node apps released with release-please",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    ":automergeMinor",
+    ":automergeDigest",
+    "customManagers:dockerfileVersions",
+    "security:minimumReleaseAgeNpm"
+  ],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "semanticCommitType": "fix"
+  },
+  "packageRules": [
+    {
+      "description": "Dependency updates are chores, so they wait for the next feat or fix release instead of each cutting one. config:recommended would title production dependencies fix(deps)",
+      "matchPackageNames": ["*"],
+      "semanticCommitType": "chore"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": true
+    },
+    {
+      "description": "Leave engines.node alone while the new Node.js version still satisfies it. The global bump strategy would raise it to every new patch",
+      "matchDepTypes": ["engines"],
+      "rangeStrategy": "replace"
+    },
+    {
+      "description": "Group Node.js and its types across mise.toml, the Dockerfile, and package.json",
+      "matchPackageNames": ["node", "@types/node", "gcr.io/distroless/nodejs*"],
+      "groupName": "Node.js",
+      "automerge": true
+    },
+    {
+      "description": "Hold Node.js majors for review",
+      "matchPackageNames": ["node", "@types/node", "@tsconfig/node", "gcr.io/distroless/nodejs*"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "Keep pnpm on one version in mise.toml, package.json, and the Dockerfile",
+      "matchPackageNames": ["pnpm"],
+      "groupName": "pnpm"
+    },
+    {
+      "description": "Group Hono with its middleware and server packages, which declare peer ranges on it",
+      "matchPackageNames": ["hono", "@hono/*"],
+      "groupName": "Hono"
+    },
+    {
+      "description": "Group the opentelemetry-js and opentelemetry-js-contrib monorepos. Their instrumentations pin the same exact 0.x @opentelemetry/instrumentation",
+      "matchPackageNames": ["@opentelemetry/*"],
+      "groupName": "OpenTelemetry"
+    },
+    {
+      "description": "Group Vite with its plugins, which declare peer ranges on it, and Rolldown, which the server build uses directly. A Vite release usually moves its Rolldown range, so the updates land in one PR",
+      "matchPackageNames": ["vite", "@vitejs/*", "rolldown", "@rolldown/*"],
+      "groupName": "vite"
+    },
+    {
+      "description": "Group Oxlint with its ESLint-rules plugin, which releases with it, and tsgolint, whose minimum version Oxlint sets",
+      "matchPackageNames": ["oxlint", "oxlint-*"],
+      "groupName": "Oxlint"
+    },
+    {
+      "description": "Add the React types to group:monorepos' React group",
+      "matchPackageNames": ["@types/react", "@types/react-dom"],
+      "groupName": "react monorepo"
+    },
+    {
+      "description": "Group drizzle-orm with drizzle-kit, which generates its migrations, and drizzle-zod",
+      "matchPackageNames": ["drizzle-orm", "drizzle-kit", "drizzle-zod"],
+      "groupName": "drizzle"
+    }
+  ]
+}
