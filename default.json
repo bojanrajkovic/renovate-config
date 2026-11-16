@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Shared Renovate settings for pnpm/Node apps released with release-please",
+  "description": "Shared Renovate settings for apps and tools released with release-please",
   "extends": [
     "config:best-practices",
     ":automergeMinor",
@@ -15,14 +15,21 @@
   },
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
+    "labels": ["security"],
     "semanticCommitType": "fix"
   },
+  "semanticCommits": "enabled",
   "postUpdateOptions": ["gomodTidy"],
   "packageRules": [
     {
       "description": "mise can't hold a digest, and its docker-datasourced tools (node) would otherwise get one from docker:pinDigests. Renovate then aborts the branch update without opening a PR",
       "matchManagers": ["mise"],
       "pinDigests": false
+    },
+    {
+      "description": "Pinning a digest changes no resolved version, so it automerges once CI is green. best-practices opens these for every unpinned image",
+      "matchUpdateTypes": ["pin", "pinDigest"],
+      "automerge": true
     },
     {
       "description": "Group GitHub Actions updates",

@@ -5,7 +5,7 @@ extends one preset and keeps only the rules that are its own.
 
 | Preset | For | `extends` |
 |---|---|---|
-| `default` | pnpm/Node apps released with release-please | `github>bojanrajkovic/renovate-config` |
+| `default` | apps and tools released with release-please | `github>bojanrajkovic/renovate-config` |
 | `library` | npm libraries, where a dependency update should cut a release | `github>bojanrajkovic/renovate-config:library` |
 
 A consumer's `renovate.json` looks like this:
