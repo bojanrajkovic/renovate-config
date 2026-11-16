@@ -28,9 +28,12 @@ Rules in the consumer come after the preset's, so they win on conflict.
 
 ## What `default` does
 
-- Dependency updates are `chore(deps)`, so they wait for the next `feat` or `fix` release. Security
-  updates are `fix(deps)` and release right away.
-- Minor, patch and digest updates automerge. Node.js majors and anything a repo flags do not.
+- Starts from `config:best-practices`: image digests are pinned, dev dependencies are pinned to
+  exact versions, and lockfiles refresh weekly.
+- Commit types follow Renovate's default: production dependencies are `fix(deps)`, everything else
+  is `chore(deps)`. A repo that wants updates to wait for the next release overrides it.
+- Minor, patch and digest updates automerge. Node.js majors and 0.x minors don't.
+- Version ranges keep their style: `bump` raises the floor of a `^1.2.3` range.
 - Related packages move in one PR: Node.js, pnpm, GitHub Actions, Hono, OpenTelemetry, Vite,
   Oxlint, Drizzle.
 
